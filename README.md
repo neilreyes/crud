@@ -1,7 +1,1 @@
-React + Redux Boilerplate
-
-Dependencies:
-- redux
-- react-redux
-- thunk
-- react-router-dom
+CRUD appliaction built with React, Redux, and Router v4
