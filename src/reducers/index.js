@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
+import { firebaseReducer } from 'react-redux-firebase';
 import fetchPosts from './post';
 
 export default combineReducers({
-    posts: fetchPosts
+    posts: fetchPosts,
+    firebase: firebaseReducer,
 });

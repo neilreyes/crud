@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# sensitive file
+firebaseconfig.js
+
 # testing
 /coverage
 

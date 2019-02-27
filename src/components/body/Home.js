@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../../actions/index';
+import { firebase } from 'react-redux-firebase';
 
 class Home extends Component {
     
@@ -17,7 +18,6 @@ class Home extends Component {
 
     render(){
         const posts = this.props.posts;
-        
         return (
             <div>
                 {posts.map((text, index) => {
@@ -36,7 +36,7 @@ class Home extends Component {
 function mapStateToProps(state){
     return {
         posts: state.posts.items,
-        newPost: state.posts.item
+        newPost: state.posts.item,
     }
 }
 
