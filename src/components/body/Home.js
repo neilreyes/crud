@@ -1,49 +1,55 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../../actions/index';
-import { firebase } from 'react-redux-firebase';
+import { firestoreConnect, isLoaded } from 'react-redux-firebase';
 
 class Home extends Component {
-    
-    componentWillMount() {
-        this.props.fetchPosts();
-    }
+    renderTransactions(data){
+        if (!isLoaded(data)) {
+            return <div>Loading...</div>
+        } else {
+            const transactions = data;
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.newPost) {
-            this.props.posts.unshift(nextProps.newPost);
+            console.log(transactions);
+            return transactions.map(entry=>{
+                return(
+                    <div key={entry.id}>
+                        <h3>{entry.title}</h3>
+                        <p>{entry.amount}</p>
+                        <hr/>
+                    </div>
+                );
+            });
         }
     }
 
     render(){
-        const posts = this.props.posts;
+        const transactions = this.props.transactions;
         return (
             <div>
-                {posts.map((text, index) => {
-                    return (
-                        <div key={index}>
-                            <h3>{text.title}</h3>
-                            <p>{text.body}</p>
-                        </div>
-                    );
-                })}
+                {this.renderTransactions(transactions)}
             </div>
         );
     }
 }
 
+Home.propTypes = {
+    transactions: PropTypes.array,
+}
+
 function mapStateToProps(state){
     return {
-        posts: state.posts.items,
-        newPost: state.posts.item,
+        transactions: state.firestore.ordered.transactions,
     }
 }
 
-Home.propTypes = {
-    fetchPosts: PropTypes.func.isRequired,
-    posts: PropTypes.array.isRequired,
-    newPost: PropTypes.object,
-}
-
-export default connect(mapStateToProps, { fetchPosts })(Home);
+export default compose(
+    firestoreConnect(props => {
+        return [{
+            collection: 'transactions',
+        }]
+    }),
+    connect(mapStateToProps, { fetchPosts })
+)(Home);
