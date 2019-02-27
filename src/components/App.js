@@ -5,8 +5,6 @@ import AddPost from './body/AddPost';
 import Navigation from './navigation/Navigation';
 import Home from './body/Home';
 import Post from './body/Post';
-// Redux
-
 
 class App extends Component {
   render() {
@@ -22,12 +20,6 @@ class App extends Component {
         </div>
       </BrowserRouter>
     );
-  }
-}
-
-const mapStateToProps = state =>{
-  return {
-    data: state,
   }
 }
 

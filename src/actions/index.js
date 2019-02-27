@@ -1,4 +1,4 @@
-import { FETCH_POSTS, ADD_POST } from '../actions/actionTypes';
+import { FETCH_POSTS } from '../actions/actionTypes';
 
 export const fetchPosts = () => dispatch =>{
     fetch('https://jsonplaceholder.typicode.com/posts')
@@ -9,18 +9,8 @@ export const fetchPosts = () => dispatch =>{
         }));
 }
 
-export const addPost = post => dispatch => {
-    console.log("from addpost action:",post);
-    fetch('https://jsonplaceholder.typicode.com/posts',{
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify(post)
-    })
-        .then(res => res.json())
-        .then(post => dispatch({
-            type: ADD_POST,
-            payload: post
-        }));
+export const addPost = post => (dispatch, {getFirebase, getFirestore}) => {
+    const firestore = getFirebase();
+
+    console.log(firestore);
 }
