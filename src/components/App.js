@@ -1,12 +1,34 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+// Components
+import AddPost from './body/AddPost';
+import Navigation from './navigation/Navigation';
+import Home from './body/Home';
+import Post from './body/Post';
+// Redux
+import { connect } from 'react-redux';
+
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        Barebore
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Navigation />
+          <Switch>
+            <Route path="/" component={Home} exact />
+            <Route path="/add-post" component={connect(mapStateToProps)(AddPost)} />
+            <Route path="/post/:id" component={Post} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
+  }
+}
+
+const mapStateToProps = state =>{
+  return {
+    data: state,
   }
 }
 
