@@ -6,7 +6,6 @@ import Navigation from './navigation/Navigation';
 import Home from './body/Home';
 import Post from './body/Post';
 // Redux
-import { connect } from 'react-redux';
 
 
 class App extends Component {
@@ -17,7 +16,7 @@ class App extends Component {
           <Navigation />
           <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/add-post" component={connect(mapStateToProps)(AddPost)} />
+            <Route path="/add-post" component={AddPost} />
             <Route path="/post/:id" component={Post} />
           </Switch>
         </div>
