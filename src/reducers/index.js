@@ -5,6 +5,6 @@ import fetchPosts from './post';
 
 export default combineReducers({
     posts: fetchPosts,
-    firestore: firestoreReducer,
     firebase: firebaseReducer,
+    firestore: firestoreReducer,
 });
