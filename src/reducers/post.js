@@ -15,10 +15,7 @@ export default (state = initialState, action) => {
                 item: payload
             };
         case FETCH_POSTS:
-            return {
-                ...state,
-                items: payload
-            };
+            return Object.assign({}, state, {items: payload});
         default:
             return state;
     }

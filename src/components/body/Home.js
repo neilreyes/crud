@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../../actions/index';
-import { firestoreConnect, isLoaded } from 'react-redux-firebase';
 
 class Home extends Component {
-    renderTransactions(data){
-        if (!isLoaded(data)) {
-            return <div>Loading...</div>
-        } else {
-            const transactions = data;
+     componentDidMount(){
+        this.props.fetchPosts();
+    }
 
-            console.log(transactions);
-            return transactions.map(entry=>{
-                return(
-                    <div key={entry.id}>
+    renderTransactions(data){
+        if( data.length === 0 ){
+            return "Loading..."
+        } else {
+            return data.map((entry, index) => {
+                return (
+                    <div key={index}>
                         <h3>{entry.title}</h3>
                         <p>{entry.amount}</p>
-                        <hr/>
+                        <hr />
                     </div>
                 );
             });
@@ -26,30 +26,26 @@ class Home extends Component {
     }
 
     render(){
-        const transactions = this.props.transactions;
+        const posts = this.props.posts;
+        
         return (
             <div>
-                {this.renderTransactions(transactions)}
+                {this.renderTransactions(posts)}
             </div>
         );
     }
 }
 
-Home.propTypes = {
+/* Home.propTypes = {
     transactions: PropTypes.array,
 }
-
+ */
 function mapStateToProps(state){
     return {
-        transactions: state.firestore.ordered.transactions,
+        posts: state.posts.items,
     }
 }
 
 export default compose(
-    firestoreConnect(props => {
-        return [{
-            collection: 'transactions',
-        }]
-    }),
     connect(mapStateToProps, { fetchPosts })
 )(Home);
