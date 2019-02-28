@@ -1,16 +1,36 @@
-import { FETCH_POSTS } from '../actions/actionTypes';
+import { FETCH_POSTS, ADD_POST } from '../actions/actionTypes';
 
-export const fetchPosts = () => dispatch =>{
-    fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(res => res.json())
-        .then(posts => dispatch({
-            type: FETCH_POSTS,
-            payload: posts
-        }));
+export const getPosts = posts => ({ type: FETCH_POSTS, payload: posts });
+
+export const fetchPosts = () => {
+    return (dispatch, getState, {getFirestore, getFirebase}) => {
+        const firestore = getFirestore();
+        const posts = [];
+        
+        firestore
+            .collection('transactions')
+            .get()
+            .then(querySnapshot=>{
+                querySnapshot.forEach(doc=>{
+                    posts.push(doc.data());
+                })
+            })
+            .then(()=>dispatch(getPosts(posts)));
+        
+
+    }
 }
 
-export const addPost = post => (dispatch, {getFirebase, getFirestore}) => {
-    const firestore = getFirebase();
 
-    console.log(firestore);
+
+export const addPost = post => {
+    return (dispatch, getState, {getFirebase, getFirestore}) =>{
+        const fireStore = getFirestore();
+
+        console.log(fireStore.collection('transactions'));
+        dispatch({
+            type:ADD_POST,
+            payload:post
+        });
+    }
 }
