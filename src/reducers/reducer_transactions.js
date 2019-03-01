@@ -4,6 +4,9 @@ import {
     FETCH_TRANSACTIONS_FAILURE,
     FETCH_TRANSACTIONS_RESET,
     ADD_EXPENSE,
+    ADD_EXPENSE_SUCCESS,
+    ADD_EXPENSE_FAILURE,
+    ADD_EXPENSE_RESET,
 } from '../actions/transactions';
 
 const INITIAL_STATE = {
@@ -33,6 +36,7 @@ export default (state = INITIAL_STATE, action) => {
     const { payload, type } = action;
 
     switch ( type ) {
+        // Fetch transactions
         case FETCH_TRANSACTIONS:
             return Object.assign(
                 {},
@@ -58,11 +62,26 @@ export default (state = INITIAL_STATE, action) => {
                 { lists: { entries: [], error: payload, loading: false } }
             );
 
+        // add expense
         case ADD_EXPENSE:
-            return {
-                ...state,
-                newEntry: payload
-            };
+            return Object.assign({}, state,{
+                newEntry: { entry: null, error: null, loading: true }
+            });
+
+        case ADD_EXPENSE_SUCCESS:
+            return Object.assign({}, state, {
+                newEntry: { entry: payload, error: null, loading: false }
+            });
+
+        case ADD_EXPENSE_FAILURE:
+            return Object.assign({}, state, {
+                newEntry: { entry: null, error: payload, loading: false }
+            });
+
+        case ADD_EXPENSE_RESET:
+            return Object.assign({}, state, {
+                newEntry: { entry: null, error: null, loading: false }
+            });
 
         default:
             return state;

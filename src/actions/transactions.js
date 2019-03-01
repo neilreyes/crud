@@ -1,3 +1,5 @@
+import { delay } from "q";
+
 // Fetch
 export const FETCH_TRANSACTIONS = "FETCH_TRANSACTIONS";
 export const FETCH_TRANSACTIONS_SUCCESS = "FETCH_TRANSACTIONS_SUCESS";
@@ -6,6 +8,9 @@ export const FETCH_TRANSACTIONS_RESET = "FETCH_TRANSACTIONS_RESET";
 
 // ADD
 export const ADD_EXPENSE = "ADD_EXPENSE";
+export const ADD_EXPENSE_SUCCESS = "ADD_EXPENSE_SUCCESS";
+export const ADD_EXPENSE_FAILURE = "ADD_EXPENSE_FAILURE";
+export const ADD_EXPENSE_RESET = "ADD_EXPENSE_RESET";
 
 // DELETE
 export const DELETE_TRANSACTION = "DELETE_TRANSACTION";
@@ -19,6 +24,7 @@ export const fetchTransactions = () => {
         
         firestore
             .collection('transactions')
+            .orderBy('date','desc')
             .get()
             .then((querySnapshot)=>{
                 if( !querySnapshot.empty ){
@@ -30,9 +36,7 @@ export const fetchTransactions = () => {
                     dispatch({ type: FETCH_TRANSACTIONS_FAILURE, payload: "No documents found" });
                 }
             })
-            .catch(error=>{console.log(error)});
-
-        console.log(transactions);
+            .catch(error=>{console.error(error)});
     }
 }
 
@@ -40,19 +44,24 @@ export const addExpense = newEntry => {
     return (dispatch, getState, {getFirebase, getFirestore}) =>{
         const firestore = getFirestore();
         
+        dispatch({type: ADD_EXPENSE, payload: true});
+        
         firestore
             .collection('transactions')
             .add(newEntry)
             .then(docRef=>{
                 dispatch({
-                    type: ADD_EXPENSE,
+                    type: ADD_EXPENSE_SUCCESS,
                     payload: newEntry,
                 });
-                console.log("Transaction ID:", docRef);
             })
-            .catch(err=>{
-                console.error(err);
+            .catch(error=>{
+                dispatch({
+                    type: ADD_EXPENSE_FAILURE,
+                    payload: error,
+                });
             })
+        
     }
 }
 
