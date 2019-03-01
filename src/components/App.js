@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // Components
-import AddPost from './body/AddPost';
 import Navigation from './navigation/Navigation';
-import Home from './body/Home';
-import Post from './body/Post';
+import Home from './pages/HomePage';
 
 class App extends Component {
   render() {
@@ -14,8 +12,6 @@ class App extends Component {
           <Navigation />
           <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/add-post" component={AddPost} />
-            <Route path="/post/:id" component={Post} />
           </Switch>
         </div>
       </BrowserRouter>
